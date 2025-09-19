@@ -1,4 +1,35 @@
 
+# Table of Contents
+
+## Section 1: Arrays & Hashing
+- [Contains Duplicate [Must Do]](#1️⃣-contains-duplicate-must-do)
+- [Valid Anagram](#2️⃣-valid-anagram)
+- [Two Sum [Must Do]](#3️⃣-two-sum-must-do)
+- [Group Anagrams [Must Do]](#4️⃣-group-anagrams-must-do)
+- [Top K Frequent Elements [Must Do]](#5️⃣-top-k-frequent-elements-must-do)
+- [Encode and Decode Strings](#6️⃣-encode-and-decode-strings)
+- [Product of Array Except Self [Must Do]](#7️⃣-product-of-array-except-self-must-do)
+- [Valid Sudoku [Must Do]](#8️⃣-valid-sudoku-must-do)
+- [Longest Consecutive Sequence [Must Do]](#9️⃣-longest-consecutive-sequence-must-do)
+
+## Section 2: Two Pointers
+- [Valid Palindrome [Must Do]](#1️⃣-valid-palindrome-must-do)
+- [Two Sum II – Input Array Is Sorted [Must Do]](#2️⃣-two-sum-ii--input-array-is-sorted-must-do)
+- [3Sum [Must Do]](#3️⃣-3sum-must-do)
+- [Container With Most Water [Must Do]](#4️⃣-container-with-most-water-must-do)
+- [Trapping Rain Water [Must Do]](#5️⃣-trapping-rain-water-must-do)
+
+## Section 3: Sliding Window
+- [Best Time to Buy and Sell Stock [Must Do]](#1️⃣-best-time-to-buy-and-sell-stock-must-do)
+- [Longest Substring Without Repeating Characters [Must Do]](#2️⃣-longest-substring-without-repeating-characters-must-do)
+- [Longest Repeating Character Replacement [Must Do]](#3️⃣-longest-repeating-character-replacement-must-do)
+- [Permutation in String [Must Do]](#4️⃣-permutation-in-string-must-do)
+- [Minimum Window Substring [Must Do]](#5️⃣-minimum-window-substring-must-do)
+- [Sliding Window Maximum [Must Do]](#6️⃣-sliding-window-maximum-must-do)
+
+
+
+
 
 ## Section 1: Arrays & Hashing
 
