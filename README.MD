@@ -105,6 +105,26 @@
 * [Reverse Nodes in k-Group $Must Do$](#11️⃣-reverse-nodes-in-k-group-must-do)
 
 
+## Section 11: Trees
+
+* [Invert Binary Tree \$Must Do\$](#1️⃣-invert-binary-tree-must-do)
+* [Maximum Depth of Binary Tree \$Must Do\$](#2️⃣-maximum-depth-of-binary-tree-must-do)
+* [Diameter of Binary Tree \$Must Do\$](#3️⃣-diameter-of-binary-tree-must-do)
+* [Balanced Binary Tree \$Must Do\$](#4️⃣-balanced-binary-tree-must-do)
+* [Same Tree \$Must Do\$](#5️⃣-same-tree-must-do)
+* [Subtree of Another Tree \$Must Do\$](#6️⃣-subtree-of-another-tree-must-do)
+* [Lowest Common Ancestor of BST \$Must Do\$](#7️⃣-lowest-common-ancestor-of-bst-must-do)
+* [Binary Tree Level Order Traversal \$Must Do\$](#8️⃣-binary-tree-level-order-traversal-must-do)
+* [Binary Tree Right Side View \$Must Do\$](#9️⃣-binary-tree-right-side-view-must-do)
+* [Count Good Nodes in Binary Tree](#10️⃣-count-good-nodes-in-binary-tree-medium)
+* [Validate Binary Search Tree \$Must Do\$](#11️⃣-validate-binary-search-tree-must-do)
+* [Kth Smallest Element in BST \$Must Do\$](#12️⃣-kth-smallest-element-in-bst-must-do)
+* [Construct Binary Tree from Preorder and Inorder](#13️⃣-construct-binary-tree-from-preorder-and-inorder-medium-hard)
+* [Binary Tree Maximum Path Sum](#14️⃣-binary-tree-maximum-path-sum-hard)
+* [Serialize and Deserialize Binary Tree](#15️⃣-serialize-and-deserialize-binary-tree-medium-hard)
+* [Binary Tree Zigzag Level Order Traversal](#16️⃣-binary-tree-zigzag-level-order-traversal-medium)
+* [Serialize and Deserialize BST](#17️⃣-serialize-and-deserialize-bst-medium)
+
 
 
 
@@ -2801,7 +2821,9 @@ def mergeTwoLists(l1, l2):
 ```
 
 **T.C.:** O(n + m)
+
 **S.C.:** O(1)
+
 **Quick Recall Hack:** “Dummy + tail → pick smaller → move pointers.”
 
 ---
@@ -3134,6 +3156,467 @@ def reverse(start, first, last):
 **S.C.:** O(1)
 
 **Quick Recall Hack:** “Reverse every k nodes → connect properly.”
+
+
+
+
+
+
+---
+
+# ** Section 11: Trees**
+
+---
+
+### 1️⃣ Invert Binary Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* **Recursive swap** left and right children of every node
+
+**Python Code:**
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def invertTree(root):
+    if not root:
+        return None
+    root.left, root.right = invertTree(root.right), invertTree(root.left)
+    return root
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h) recursion stack, h = height
+
+**Quick Recall Hack:** “Swap left & right recursively.”
+
+---
+
+### 2️⃣ Maximum Depth of Binary Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* DFS recursion → max(left, right) + 1
+
+**Python Code:**
+
+```python
+def maxDepth(root):
+    if not root:
+        return 0
+    return 1 + max(maxDepth(root.left), maxDepth(root.right))
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Depth = 1 + max of children.”
+
+---
+
+### 3️⃣ Diameter of Binary Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* Diameter = max(left\_depth + right\_depth) at any node
+
+**Python Code:**
+
+```python
+def diameterOfBinaryTree(root):
+    res = 0
+    def dfs(node):
+        nonlocal res
+        if not node:
+            return 0
+        left, right = dfs(node.left), dfs(node.right)
+        res = max(res, left + right)
+        return 1 + max(left, right)
+    dfs(root)
+    return res
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Diameter = left\_depth + right\_depth max.”
+
+---
+
+### 4️⃣ Balanced Binary Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* Check recursively → left/right height difference ≤ 1
+
+**Python Code:**
+
+```python
+def isBalanced(root):
+    def dfs(node):
+        if not node:
+            return 0, True
+        lh, lb = dfs(node.left)
+        rh, rb = dfs(node.right)
+        height = 1 + max(lh, rh)
+        balanced = lb and rb and abs(lh - rh) <= 1
+        return height, balanced
+    return dfs(root)[1]
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Check height difference ≤ 1 recursively.”
+
+---
+
+### 5️⃣ Same Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* DFS → compare values + recursively left and right
+
+**Python Code:**
+
+```python
+def isSameTree(p, q):
+    if not p and not q:
+        return True
+    if not p or not q or p.val != q.val:
+        return False
+    return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Values + structure must match recursively.”
+
+---
+
+### 6️⃣ Subtree of Another Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* For each node in s → check if tree equals t
+
+**Python Code:**
+
+```python
+def isSubtree(s, t):
+    def isSame(a, b):
+        if not a and not b:
+            return True
+        if not a or not b or a.val != b.val:
+            return False
+        return isSame(a.left, b.left) and isSame(a.right, b.right)
+    
+    if not s:
+        return False
+    return isSame(s, t) or isSubtree(s.left, t) or isSubtree(s.right, t)
+```
+
+**T.C.:** O(m\*n) worst-case
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Check every node for equality.”
+
+---
+
+### 7️⃣ Lowest Common Ancestor of BST \[Must Do]
+
+**Pattern / Idea:**
+
+* BST property → if root > both → go left, if root < both → go right, else root is LCA
+
+**Python Code:**
+
+```python
+def lowestCommonAncestor(root, p, q):
+    if root.val > p.val and root.val > q.val:
+        return lowestCommonAncestor(root.left, p, q)
+    elif root.val < p.val and root.val < q.val:
+        return lowestCommonAncestor(root.right, p, q)
+    else:
+        return root
+```
+
+**T.C.:** O(h)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “BST → check sides → root in between → LCA.”
+
+---
+
+### 8️⃣ Binary Tree Level Order Traversal \[Must Do]
+
+**Pattern / Idea:**
+
+* BFS using queue → append each level
+
+**Python Code:**
+
+```python
+from collections import deque
+def levelOrder(root):
+    if not root:
+        return []
+    res = []
+    queue = deque([root])
+    while queue:
+        level = []
+        for _ in range(len(queue)):
+            node = queue.popleft()
+            level.append(node.val)
+            if node.left: queue.append(node.left)
+            if node.right: queue.append(node.right)
+        res.append(level)
+    return res
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “BFS → one level at a time.”
+
+---
+
+### 9️⃣ Binary Tree Right Side View \[Must Do]
+
+**Pattern / Idea:**
+
+* BFS → take last node in each level
+
+**Python Code:**
+
+```python
+from collections import deque
+def rightSideView(root):
+    if not root:
+        return []
+    res = []
+    queue = deque([root])
+    while queue:
+        for i in range(len(queue)):
+            node = queue.popleft()
+            if i == len(queue) - 1:
+                res.append(node.val)
+            if node.left: queue.append(node.left)
+            if node.right: queue.append(node.right)
+    return res
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “BFS → pick last in level.”
+
+---
+
+### 10️⃣ Count Good Nodes in Binary Tree \[Medium]
+
+**Pattern / Idea:**
+
+* DFS → pass max value seen from root → node.val ≥ max → good
+
+**Python Code:**
+
+```python
+def goodNodes(root):
+    def dfs(node, max_val):
+        if not node:
+            return 0
+        count = 1 if node.val >= max_val else 0
+        max_val = max(max_val, node.val)
+        count += dfs(node.left, max_val)
+        count += dfs(node.right, max_val)
+        return count
+    return dfs(root, root.val)
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Pass max from root → count node ≥ max.”
+
+---
+
+### 11️⃣ Validate Binary Search Tree \[Must Do]
+
+**Pattern / Idea:**
+
+* DFS → check min/max bounds for each node
+
+**Python Code:**
+
+```python
+def isValidBST(root):
+    def dfs(node, low, high):
+        if not node:
+            return True
+        if not (low < node.val < high):
+            return False
+        return dfs(node.left, low, node.val) and dfs(node.right, node.val, high)
+    return dfs(root, float('-inf'), float('inf'))
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “BST → all left < node < all right.”
+
+---
+
+### 12️⃣ Kth Smallest Element in BST \[Must Do]
+
+**Pattern / Idea:**
+
+* Inorder traversal → sorted order → return kth element
+
+**Python Code:**
+
+```python
+def kthSmallest(root, k):
+    stack = []
+    while True:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            return root.val
+        root = root.right
+```
+
+**T.C.:** O(h + k)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Inorder → kth element.”
+
+---
+
+### 13️⃣ Construct Binary Tree from Preorder and Inorder \[Medium-Hard]
+
+**Pattern / Idea:**
+
+* Preorder → root
+* Inorder → left/right subtrees
+
+**Python Code:**
+
+```python
+def buildTree(preorder, inorder):
+    if not preorder or not inorder:
+        return None
+    root_val = preorder[0]
+    root = TreeNode(root_val)
+    idx = inorder.index(root_val)
+    root.left = buildTree(preorder[1:1+idx], inorder[:idx])
+    root.right = buildTree(preorder[1+idx:], inorder[idx+1:])
+    return root
+```
+
+**T.C.:** O(n²) (can optimize with hashmap to O(n))
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “Preorder first → split inorder → recurse left/right.”
+
+---
+
+### 14️⃣ Binary Tree Maximum Path Sum \[Hard]
+
+**Pattern / Idea:**
+
+* Recursive DFS → max path through node = left + right + node.val
+* Track global max
+
+**Python Code:**
+
+```python
+def maxPathSum(root):
+    res = float('-inf')
+    def dfs(node):
+        nonlocal res
+        if not node: return 0
+        left = max(dfs(node.left), 0)
+        right = max(dfs(node.right), 0)
+        res = max(res, node.val + left + right)
+        return node.val + max(left, right)
+    dfs(root)
+    return res
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(h)
+
+**Quick Recall Hack:** “Return max single path, track max through node.”
+
+---
+
+### 15️⃣ Serialize and Deserialize Binary Tree \[Medium-Hard]
+
+**Pattern / Idea:**
+
+* Preorder traversal → store `None` as marker
+* Reconstruct recursively
+
+**Python Code:**
+
+```python
+def serialize(root):
+    res = []
+    def dfs(node):
+        if not node:
+            res.append('X')
+            return
+        res.append(str(node.val))
+        dfs(node.left)
+        dfs(node.right)
+    dfs(root)
+    return ','.join(res)
+
+def deserialize(data):
+    vals = iter(data.split(','))
+    def dfs():
+        val = next(vals)
+        if val == 'X':
+            return None
+        node = TreeNode(int(val))
+        node.left = dfs()
+        node.right = dfs()
+        return node
+    return dfs()
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “Preorder with null → reconstruct recursively.”
+
+
+
 
 
 
