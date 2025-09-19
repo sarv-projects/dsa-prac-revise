@@ -68,6 +68,48 @@
 * [Minimum Interval to Include Each Query](#6️⃣-minimum-interval-to-include-each-query)
 
 
+## Section 8: Math & Geometry
+
+* [Rotate Image $Must Do$](#1️⃣-rotate-image-must-do)
+* [Spiral Matrix $Must Do$](#2️⃣-spiral-matrix-must-do)
+* [Set Matrix Zeroes $Must Do$](#3️⃣-set-matrix-zeroes-must-do)
+* [Happy Number $Must Do$](#4️⃣-happy-number-must-do)
+* [Plus One $Must Do$](#5️⃣-plus-one-must-do)
+* [Pow(x, n) $Must Do$](#6️⃣-powx-n-must-do)
+* [Multiply Strings $Must Do$](#7️⃣-multiply-strings-must-do)
+* [Detect Squares](#8️⃣-detect-squares)
+* [Detect Triangles $Must Do$](#9️⃣-detect-triangles-must-do)
+
+## Section 9: Bit Manipulation
+
+* [Single Number $Must Do$](#1️⃣-single-number-must-do)
+* [Number of 1 Bits $Must Do$](#2️⃣-number-of-1-bits-must-do)
+* [Counting Bits $Must Do$](#3️⃣-counting-bits-must-do)
+* [Reverse Bits $Must Do$](#4️⃣-reverse-bits-must-do)
+* [Missing Number $Must Do$](#5️⃣-missing-number-must-do)
+* [Sum of Two Integers $Must Do$](#6️⃣-sum-of-two-integers-must-do)
+* [Reverse Integer $Must Do$](#7️⃣-reverse-integer-must-do)
+
+## Section 10: Linked List
+
+* [Reverse Linked List $Must Do$](#1️⃣-reverse-linked-list-must-do)
+* [Merge Two Sorted Lists $Must Do$](#2️⃣-merge-two-sorted-lists-must-do)
+* [Linked List Cycle $Must Do$](#3️⃣-linked-list-cycle-must-do)
+* [Reorder List $Must Do$](#4️⃣-reorder-list-must-do)
+* [Remove Nth Node From End $Must Do$](#5️⃣-remove-nth-node-from-end-must-do)
+* [Copy List With Random Pointer $Must Do$](#6️⃣-copy-list-with-random-pointer-must-do)
+* [Add Two Numbers $Must Do$](#7️⃣-add-two-numbers-must-do)
+* [Find the Duplicate Number $Must Do$](#8️⃣-find-the-duplicate-number-must-do)
+* [LRU Cache $Must Do$](#9️⃣-lru-cache-must-do)
+* [Merge K Sorted Lists $Must Do$](#10️⃣-merge-k-sorted-lists-must-do)
+* [Reverse Nodes in k-Group $Must Do$](#11️⃣-reverse-nodes-in-k-group-must-do)
+
+
+
+
+
+
+
 
 
 
@@ -1960,7 +2002,7 @@ def minMeetingRooms(intervals):
 
 
 
-# Math & Geometry
+# Section 8: Math & Geometry
 
 ---
 
@@ -2277,9 +2319,7 @@ def triangleNumber(nums):
 
 
 
-
-
-# **Bit Manipulation – Core Tricks**
+# Section 9: Bit manipulation  **Bit Manipulation – Core Tricks**
 
 ---
 
@@ -2493,7 +2533,7 @@ Perfect. Let’s convert your **Bit Manipulation** problems into the same **inte
 
 ---
 
-# **Bit Manipulation**
+# **Bit Problems**
 
 ---
 
@@ -2693,3 +2733,407 @@ def reverse(x):
 7. **Sum without +** → `a ^ b` (sum), `(a & b) << 1` (carry)
 
 ---
+
+
+
+
+---
+
+# **Section 10: Linked List**
+
+---
+
+### 1️⃣ Reverse Linked List \[Must Do]
+
+**Pattern / Idea:**
+
+* Iteratively reverse pointers → previous, current, next
+
+**Python Code:**
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def reverseList(head):
+    prev = None
+    curr = head
+    while curr:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+    return prev
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Quick Recall Hack:** “Prev → Curr → Next → reverse pointer.”
+
+---
+
+### 2️⃣ Merge Two Sorted Lists \[Must Do]
+
+**Pattern / Idea:**
+
+* Use dummy node → iterate both lists → pick smaller each step
+
+**Python Code:**
+
+```python
+def mergeTwoLists(l1, l2):
+    dummy = ListNode(0)
+    tail = dummy
+    while l1 and l2:
+        if l1.val < l2.val:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+    tail.next = l1 or l2
+    return dummy.next
+```
+
+**T.C.:** O(n + m)
+**S.C.:** O(1)
+**Quick Recall Hack:** “Dummy + tail → pick smaller → move pointers.”
+
+---
+
+### 3️⃣ Linked List Cycle \[Must Do]
+
+**Pattern / Idea:**
+
+* Use **Floyd’s Tortoise and Hare** → slow & fast pointers
+
+**Python Code:**
+
+```python
+def hasCycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Quick Recall Hack:** “Slow + Fast → meet = cycle.”
+
+---
+
+### 4️⃣ Reorder List \[Must Do]
+
+**Problem:** L0 → L1 → … → Ln → reorder to L0 → Ln → L1 → Ln-1 …
+
+**Pattern / Idea:**
+
+* Find middle → reverse second half → merge two halves
+
+**Python Code:**
+
+```python
+def reorderList(head):
+    if not head or not head.next:
+        return
+    # Find middle
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    # Reverse second half
+    prev, curr = None, slow.next
+    slow.next = None
+    while curr:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+    # Merge halves
+    first, second = head, prev
+    while second:
+        tmp1, tmp2 = first.next, second.next
+        first.next, second.next = second, tmp1
+        first, second = tmp1, tmp2
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Quick Recall Hack:** “Middle → reverse → merge.”
+
+---
+
+### 5️⃣ Remove Nth Node From End \[Must Do]
+
+**Pattern / Idea:**
+
+* Two pointers → first advances n steps → move both until first is end → remove node
+
+**Python Code:**
+
+```python
+def removeNthFromEnd(head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    first = second = dummy
+    for _ in range(n+1):
+        first = first.next
+    while first:
+        first = first.next
+        second = second.next
+    second.next = second.next.next
+    return dummy.next
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Quick Recall Hack:** “Two pointers → remove nth from end.”
+
+---
+
+### 6️⃣ Copy List With Random Pointer \[Must Do]
+
+**Pattern / Idea:**
+
+* Use interleaving nodes → copy random pointers → separate lists
+
+**Python Code:**
+
+```python
+class Node:
+    def __init__(self, val, next=None, random=None):
+        self.val = val
+        self.next = next
+        self.random = random
+
+def copyRandomList(head):
+    if not head:
+        return None
+    # Step 1: copy nodes interleaved
+    curr = head
+    while curr:
+        nxt = curr.next
+        curr.next = Node(curr.val)
+        curr.next.next = nxt
+        curr = nxt
+    # Step 2: copy random
+    curr = head
+    while curr:
+        if curr.random:
+            curr.next.random = curr.random.next
+        curr = curr.next.next
+    # Step 3: separate lists
+    curr, copy = head, head.next
+    head_copy = copy
+    while curr:
+        curr.next = curr.next.next
+        copy.next = copy.next.next if copy.next else None
+        curr = curr.next
+        copy = copy.next
+    return head_copy
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1) extra (interleaving trick)
+
+**Quick Recall Hack:** “Interleave → copy random → separate.”
+
+---
+
+### 7️⃣ Add Two Numbers \[Must Do]
+
+**Pattern / Idea:**
+
+* Iteratively add corresponding digits → carry → new node
+
+**Python Code:**
+
+```python
+def addTwoNumbers(l1, l2):
+    dummy = ListNode(0)
+    curr, carry = dummy, 0
+    while l1 or l2 or carry:
+        val = carry
+        if l1:
+            val += l1.val
+            l1 = l1.next
+        if l2:
+            val += l2.val
+            l2 = l2.next
+        carry, val = divmod(val, 10)
+        curr.next = ListNode(val)
+        curr = curr.next
+    return dummy.next
+```
+
+**T.C.:** O(max(n, m))
+
+**S.C.:** O(max(n, m))
+
+**Quick Recall Hack:** “Digit-wise addition → carry → append.”
+
+---
+
+### 8️⃣ Find the Duplicate Number \[Must Do]
+
+**Pattern / Idea:**
+
+* **Linked List cycle detection trick** using indices → Floyd’s Tortoise & Hare
+
+**Python Code:**
+
+```python
+def findDuplicate(nums):
+    slow = fast = nums[0]
+    while True:
+        slow = nums[slow]
+        fast = nums[nums[fast]]
+        if slow == fast:
+            break
+    slow = nums[0]
+    while slow != fast:
+        slow = nums[slow]
+        fast = nums[fast]
+    return slow
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Quick Recall Hack:** “Array values as pointers → detect cycle.”
+
+---
+
+### 9️⃣ LRU Cache \[Must Do]
+
+**Pattern / Idea:**
+
+* Use **OrderedDict or doubly linked list + hashmap** → O(1) get & put
+
+**Python Code:**
+
+```python
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache = OrderedDict()
+        self.capacity = capacity
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)
+```
+
+**T.C.:** O(1)
+
+**S.C.:** O(capacity)
+
+**Quick Recall Hack:** “OrderedDict → move\_to\_end → pop oldest.”
+
+---
+
+### 10️⃣ Merge K Sorted Lists \[Must Do]
+
+**Pattern / Idea:**
+
+* Use **heap (priority queue)** → always take smallest head
+
+**Python Code:**
+
+```python
+from heapq import heappush, heappop
+
+def mergeKLists(lists):
+    heap = []
+    for i, node in enumerate(lists):
+        if node:
+            heappush(heap, (node.val, i, node))
+    dummy = curr = ListNode(0)
+    while heap:
+        val, i, node = heappop(heap)
+        curr.next = node
+        curr = curr.next
+        if node.next:
+            heappush(heap, (node.next.val, i, node.next))
+    return dummy.next
+```
+
+**T.C.:** O(N log k) (N = total nodes, k = lists)
+
+**S.C.:** O(k)
+
+**Quick Recall Hack:** “Heap → always smallest head → append → push next.”
+
+---
+
+### 11️⃣ Reverse Nodes in k-Group \[Must Do]
+
+**Pattern / Idea:**
+
+* Reverse every k nodes → use dummy → iterative solution
+
+**Python Code:**
+
+```python
+def reverseKGroup(head, k):
+    dummy = jump = ListNode(0)
+    dummy.next = head
+    prev = head
+    count = 0
+    while head:
+        count += 1
+        if count % k == 0:
+            prev = reverse(prev, jump.next, head.next)
+            jump = prev
+            head = prev.next
+        else:
+            head = head.next
+    return dummy.next
+
+def reverse(start, first, last):
+    prev = last
+    curr = first
+    while curr != last:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+    start.next = prev
+    return first
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Quick Recall Hack:** “Reverse every k nodes → connect properly.”
+
+
+
