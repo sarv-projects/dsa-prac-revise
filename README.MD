@@ -7,6 +7,7 @@
 ### 1️⃣ Contains Duplicate \[Must Do]
 
 **Pattern / Idea:** Use a set to track seen elements. If a number repeats, return True.
+
 **Pseudocode:**
 
 * Initialize empty set `seen`
@@ -39,6 +40,7 @@ def containsDuplicate(nums):
 ### 2️⃣ Valid Anagram
 
 **Pattern / Idea:** Count characters in both strings and compare.
+
 **Pseudocode:**
 
 * If lengths differ → False
@@ -64,6 +66,7 @@ def isAnagram(s, t):
 ### 3️⃣ Two Sum \[Must Do]
 
 **Pattern / Idea:** Use hash map to store numbers and look for complement.
+
 **Pseudocode:**
 
 * Initialize empty dictionary `d`
@@ -94,6 +97,7 @@ def twoSum(nums, target):
 ### 4️⃣ Group Anagrams \[Must Do]
 
 **Pattern / Idea:** Strings with same sorted characters belong together. Use hash map.
+
 **Pseudocode:**
 
 * Initialize `groups = defaultdict(list)`
@@ -126,6 +130,7 @@ def groupAnagrams(strs):
 ### 5️⃣ Top K Frequent Elements \[Must Do]
 
 **Pattern / Idea:** Count frequency → use heap or bucket sort.
+
 **Pseudocode:**
 
 * Count elements using Counter
@@ -152,6 +157,7 @@ def topKFrequent(nums, k):
 ### 6️⃣ Encode and Decode Strings
 
 **Pattern / Idea:** Encode using delimiter; decode by splitting.
+
 **Pseudocode:**
 
 * Encode: append length + '#' + string
@@ -186,6 +192,7 @@ def decode(s):
 ### 7️⃣ Product of Array Except Self \[Must Do]
 
 **Pattern / Idea:** Prefix & suffix product arrays.
+
 **Pseudocode:**
 
 * Left product: accumulate from start
@@ -220,6 +227,7 @@ def productExceptSelf(nums):
 ### 8️⃣ Valid Sudoku \[Must Do]
 
 **Pattern / Idea:** Check rows, columns, and 3x3 blocks for duplicates.
+
 **Pseudocode:**
 
 * For each row, col, block:
@@ -259,6 +267,7 @@ def isValidSudoku(board):
 ### 9️⃣ Longest Consecutive Sequence \[Must Do]
 
 **Pattern / Idea:** Use a set to expand sequences from sequence starts.
+
 **Pseudocode:**
 
 * Put nums in set
@@ -301,6 +310,7 @@ Perfect. Let’s tackle the **Two Pointers** section in your requested **Problem
 ### 1️⃣ Valid Palindrome \[Must Do]
 
 **Pattern / Idea:** Use two pointers from start and end; skip non-alphanumeric.
+
 **Pseudocode:**
 
 * i = 0, j = len(s)-1
@@ -340,6 +350,7 @@ def isPalindrome(s):
 ### 2️⃣ Two Sum II – Input Array Is Sorted \[Must Do]
 
 **Pattern / Idea:** Sorted array → two pointers from ends.
+
 **Pseudocode:**
 
 * i = 0, j = len(nums)-1
@@ -376,6 +387,7 @@ def twoSumSorted(nums, target):
 ### 3️⃣ 3Sum \[Must Do]
 
 **Pattern / Idea:** Sort array → fix one element → two pointers for remaining two.
+
 **Pseudocode:**
 
 * Sort nums
@@ -428,6 +440,7 @@ def threeSum(nums):
 ### 4️⃣ Container With Most Water \[Must Do]
 
 **Pattern / Idea:** Two pointers → maximize area = min(height) \* width.
+
 **Pseudocode:**
 
 * left=0, right=n-1, max\_area=0
@@ -463,6 +476,7 @@ def maxArea(height):
 ### 5️⃣ Trapping Rain Water \[Must Do]
 
 **Pattern / Idea:** Two pointers → track left\_max and right\_max → water = min(left\_max, right\_max)-height.
+
 **Pseudocode:**
 
 * left=0, right=n-1, left\_max=0, right\_max=0, water=0
@@ -519,6 +533,7 @@ def trap(height):
 
 * You don’t need nested loops; just one pass.
 
+
 **Pseudocode:**
 
 * Initialize `min_price = inf`, `max_profit = 0`
@@ -553,6 +568,7 @@ def maxProfit(prices):
 **Pattern / Idea:** Sliding window → expand window until repeat → shrink from left.
 
 * Use set to check duplicates.
+
 
 **Pseudocode:**
 
@@ -596,6 +612,7 @@ def lengthOfLongestSubstring(s):
 
 * Max length window = window size - max\_freq ≤ k
 
+
 **Pseudocode:**
 
 * left=0, count={}
@@ -637,6 +654,7 @@ def characterReplacement(s, k):
 
 * Fixed window size = len(s1), check counts match.
 
+
 **Pseudocode:**
 
 * Build freq of s1
@@ -677,6 +695,7 @@ def checkInclusion(s1, s2):
 **Pattern / Idea:** Sliding window → include all chars of t, shrink left as much as possible.
 
 * Keep counts of t, compare with window counts.
+
 
 **Pseudocode:**
 
@@ -731,6 +750,7 @@ def minWindow(s, t):
 **Pattern / Idea:** Use deque to maintain decreasing elements → max at deque\[0].
 
 * Remove smaller elements from back.
+
 
 **Pseudocode:**
 
