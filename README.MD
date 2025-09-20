@@ -3085,18 +3085,20 @@ def addTwoNumbers(l1, l2):
 
 **Pattern / Idea:**
 
-* **Linked List cycle detection trick** using indices → Floyd’s Tortoise & Hare
+* **Linked List cycle detection trick** using indices → Floyd’s Tortoise & Hare,slow moves 1 step, fast moves 2 steps
 
 **Python Code:**
 
 ```python
 def findDuplicate(nums):
     slow = fast = nums[0]
-    while True:
-        slow = nums[slow]
-        fast = nums[nums[fast]]
+    while True:#first detect the cycle,Treat the array as a linked list
+        slow = nums[slow] #move 1 step
+        fast = nums[nums[fast]] #move 2 steps
         if slow == fast:
             break
+    #Phase 2:find entrance to the cycle,Reset slow to the start of the array.
+    #The point where they meet again is the duplicate number, because that's the “entrance” of the cycle
     slow = nums[0]
     while slow != fast:
         slow = nums[slow]
