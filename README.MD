@@ -128,6 +128,20 @@
 
 
 
+## Section 12: Heap / Priority Queue
+
+* [Kth Largest Element in a Stream \$Must Do\$](#1️⃣-kth-largest-element-in-a-stream-must-do)
+* [Last Stone Weight](#2️⃣-last-stone-weight-medium)
+* [K Closest Points to Origin \$Must Do\$](#3️⃣-k-closest-points-to-origin-must-do)
+* [Kth Largest Element in an Array \$Must Do\$](#4️⃣-kth-largest-element-in-an-array-must-do)
+* [Task Scheduler](#5️⃣-task-scheduler-medium-hard)
+* [Design Twitter](#6️⃣-design-twitter-hard)
+* [Find Median from Data Stream](#7️⃣-find-median-from-data-stream-hard)
+
+
+
+
+
 
 
 
@@ -3617,6 +3631,265 @@ def deserialize(data):
 
 
 
+
+
+
+Perfect. Let’s move on to **Heap / Priority Queue** problems. These are **medium to hard in interviews**, but once you understand **min/max heap tricks**, they become very systematic. I’ll include **patterns, clear Python code, T.C./S.C., and quick interview cheats**.
+
+---
+
+# ** Section 12 : Heap / Priority Queue**
+
+---
+
+### 1️⃣ Kth Largest Element in a Stream \[Must Do]
+
+**Pattern / Idea:**
+
+* Maintain a **min-heap of size k** → top of heap is kth largest
+
+**Python Code:**
+
+```python
+import heapq
+
+class KthLargest:
+    def __init__(self, k, nums):
+        self.k = k
+        self.heap = nums
+        heapq.heapify(self.heap)
+        while len(self.heap) > k:
+            heapq.heappop(self.heap)
+
+    def add(self, val):
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+```
+
+**T.C.:** O(log k) per add
+
+**S.C.:** O(k)
+
+**Quick Recall Hack:** “Min-heap size k → top = kth largest.”
+
+---
+
+### 2️⃣ Last Stone Weight \[Medium]
+
+**Pattern / Idea:**
+
+* Use **max-heap** → smash two largest stones each time
+
+**Python Code:**
+
+```python
+import heapq
+
+def lastStoneWeight(stones):
+    stones = [-s for s in stones]  # max-heap
+    heapq.heapify(stones)
+    while len(stones) > 1:
+        first = -heapq.heappop(stones)
+        second = -heapq.heappop(stones)
+        if first != second:
+            heapq.heappush(stones, -(first - second))
+    return -stones[0] if stones else 0
+```
+
+**T.C.:** O(n log n)
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “Max-heap → smash top 2 → push remainder.”
+
+---
+
+### 3️⃣ K Closest Points to Origin \[Must Do]
+
+**Pattern / Idea:**
+
+* Use **max-heap of size k** based on distance² → keep closest k
+
+**Python Code:**
+
+```python
+import heapq
+
+def kClosest(points, k):
+    heap = []
+    for x, y in points:
+        dist = -(x*x + y*y)
+        if len(heap) < k:
+            heapq.heappush(heap, (dist, x, y))
+        else:
+            heapq.heappushpop(heap, (dist, x, y))
+    return [(x, y) for (_, x, y) in heap]
+```
+
+**T.C.:** O(n log k)
+
+**S.C.:** O(k)
+
+**Quick Recall Hack:** “Max-heap of size k → keep closest.”
+
+---
+
+### 4️⃣ Kth Largest Element in an Array \[Must Do]
+
+**Pattern / Idea:**
+
+* Same as Kth largest in stream → min-heap size k
+
+**Python Code:**
+
+```python
+import heapq
+
+def findKthLargest(nums, k):
+    heap = nums[:k]
+    heapq.heapify(heap)
+    for num in nums[k:]:
+        if num > heap[0]:
+            heapq.heappushpop(heap, num)
+    return heap[0]
+```
+
+**T.C.:** O(n log k)
+
+**S.C.:** O(k)
+
+**Quick Recall Hack:** “Min-heap size k → top = kth largest.”
+
+---
+
+### 5️⃣ Task Scheduler \[Medium-Hard]
+
+**Pattern / Idea:**
+
+* Use **max-heap for frequencies** + greedy scheduling
+
+**Python Code:**
+
+```python
+from collections import Counter
+import heapq
+
+def leastInterval(tasks, n):
+    freq = Counter(tasks)
+    heap = [-cnt for cnt in freq.values()]
+    heapq.heapify(heap)
+    time = 0
+    while heap:
+        temp = []
+        for _ in range(n + 1):
+            if heap:
+                temp.append(heapq.heappop(heap))
+        for item in temp:
+            if item + 1 < 0:
+                heapq.heappush(heap, item + 1)
+        time += n + 1 if heap else len(temp)
+    return time
+```
+
+**T.C.:** O(t log 26) → t = number of tasks
+
+**S.C.:** O(26)
+
+**Quick Recall Hack:** “Max frequency first → schedule n+1 window.”
+
+---
+
+### 6️⃣ Design Twitter \[Hard]
+
+**Pattern / Idea:**
+
+* Use **heap** to merge recent posts from multiple users → get top 10
+
+**Python Code (simplified feed):**
+
+```python
+import heapq
+from collections import defaultdict
+
+class Twitter:
+    def __init__(self):
+        self.time = 0
+        self.tweets = defaultdict(list)
+        self.followees = defaultdict(set)
+
+    def postTweet(self, userId, tweetId):
+        self.tweets[userId].append((self.time, tweetId))
+        self.time -= 1  # decreasing to simulate max-heap by time
+
+    def getNewsFeed(self, userId):
+        heap = []
+        self.followees[userId].add(userId)
+        for uid in self.followees[userId]:
+            for tweet in self.tweets[uid][-10:]:
+                heapq.heappush(heap, tweet)
+        return [tweetId for _, tweetId in heapq.nlargest(10, heap)]
+
+    def follow(self, followerId, followeeId):
+        self.followees[followerId].add(followeeId)
+
+    def unfollow(self, followerId, followeeId):
+        self.followees[followerId].discard(followeeId)
+```
+
+**T.C.:** O(n log 10) for feed
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “Heap → merge recent posts → pick top 10.”
+
+---
+
+### 7️⃣ Find Median from Data Stream \[Hard]
+
+**Pattern / Idea:**
+
+* **Two heaps** → max-heap left, min-heap right → balance sizes
+
+**Python Code:**
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.low = []  # max-heap
+        self.high = [] # min-heap
+
+    def addNum(self, num):
+        heapq.heappush(self.low, -num)
+        heapq.heappush(self.high, -heapq.heappop(self.low))
+        if len(self.low) < len(self.high):
+            heapq.heappush(self.low, -heapq.heappop(self.high))
+
+    def findMedian(self):
+        if len(self.low) > len(self.high):
+            return -self.low[0]
+        return (-self.low[0] + self.high[0]) / 2
+```
+
+**T.C.:** O(log n) per add, O(1) median
+
+**S.C.:** O(n)
+
+**Quick Recall Hack:** “Two heaps → max left, min right → balance → median.”
+
+---
+
+### ✅ **Heap / Priority Queue Summary Cheats**
+
+1. **Min-heap for kth largest** → keep heap size k
+2. **Max-heap for largest elements or frequencies** → use `-val`
+3. **Merge k sorted / recent posts** → heap to pick smallest/largest top efficiently
+4. **Median → two heaps** → max-left, min-right → balance
+
+---
 
 
 
