@@ -139,11 +139,66 @@
 * [Find Median from Data Stream](#7️⃣-find-median-from-data-stream-hard)
 
 
+---
+
+## Section 13: Graphs (Must Do Set)
+
+* [Number of Islands \$Must Do\$](#1️⃣-number-of-islands-must-do)
+* [Max Area of Island \$Must Do\$](#2️⃣-max-area-of-island-must-do)
+* [Clone Graph \$Must Do\$](#3️⃣-clone-graph-must-do)
+* [Walls and Gates \$Must Do\$](#4️⃣-walls-and-gates-must-do)
+* [Rotting Oranges \$Must Do\$](#5️⃣-rotting-oranges-must-do)
+* [Pacific Atlantic Water Flow \$Must Do\$](#6️⃣-pacific-atlantic-water-flow-must-do)
+* [Surrounded Regions \$Must Do\$](#7️⃣-surrounded-regions-must-do)
+* [Course Schedule (Topological Sort) \$Must Do\$](#8️⃣-course-schedule-topological-sort-must-do)
+* [Course Schedule II \$Must Do\$](#9️⃣-course-schedule-ii-must-do)
+* [Graph Valid Tree \$Must Do\$](#🔟-graph-valid-tree-must-do)
+* [Number of Connected Components \$Must Do\$](#1️⃣1️⃣-number-of-connected-components-must-do)
+* [Redundant Connection \$Must Do\$](#1️⃣2️⃣-redundant-connection-must-do)
+* [Word Ladder \$Must Do\$](#1️⃣3️⃣-word-ladder-must-do)
+
+---
 
 
 
+---
+
+## Section 14: 1-D Dynamic Programming
+
+* [Climbing Stairs \$Must Do\$](#1️⃣-climbing-stairs-must-do)
+* [Min Cost Climbing Stairs \$Must Do\$](#2️⃣-min-cost-climbing-stairs-must-do)
+* [House Robber \$Must Do\$](#3️⃣-house-robber-must-do)
+* [House Robber II](#4️⃣-house-robber-ii)
+* [Longest Palindromic Substring \$Must Do\$](#5️⃣-longest-palindromic-substring-must-do)
+* [Palindromic Substrings](#6️⃣-palindromic-substrings)
+* [Decode Ways \$Must Do\$](#7️⃣-decode-ways-must-do)
+* [Coin Change \$Must Do\$](#8️⃣-coin-change-must-do)
+* [Maximum Product Subarray](#9️⃣-maximum-product-subarray)
+* [Word Break \$Must Do\$](#1️⃣0️⃣-word-break-must-do)
+* [Longest Increasing Subsequence \$Must Do\$](#1️⃣1️⃣-longest-increasing-subsequence-must-do)
+* [Partition Equal Subset Sum \$Must Do\$](#1️⃣2️⃣-partition-equal-subset-sum-must-do)
+
+---
 
 
+
+---
+
+## Section 15: 2-D Dynamic Programming (Must Do)
+
+* [Unique Paths \$Must Do\$](#1️⃣-unique-paths-must-do)
+* [Longest Common Subsequence \$Must Do\$](#2️⃣-longest-common-subsequence-must-do)
+* [Best Time to Buy and Sell Stock with Cooldown \$Must Do\$](#3️⃣-best-time-to-buy-and-sell-stock-with-cooldown-must-do)
+* [Coin Change II \$Must Do\$](#4️⃣-coin-change-ii-must-do)
+* [Target Sum \$Must Do\$](#5️⃣-target-sum-must-do)
+* [Interleaving String \$Must Do\$](#6️⃣-interleaving-string-must-do)
+* [Longest Increasing Path in a Matrix \$Must Do\$](#7️⃣-longest-increasing-path-in-a-matrix-must-do)
+* [Distinct Subsequences \$Must Do\$](#8️⃣-distinct-subsequences-must-do)
+* [Edit Distance \$Must Do\$](#9️⃣-edit-distance-must-do)
+* [Burst Balloons \$Must Do\$](#🔟-burst-balloons-must-do)
+* [Regular Expression Matching \$Must Do\$](#1️⃣1️⃣-regular-expression-matching-must-do)
+
+---
 
 
 
@@ -3891,5 +3946,1299 @@ class MedianFinder:
 
 ---
 
+
+
+
+
+---
+
+# 📌 Graphs (Must Do Set)
+# ** Section 13 :Graphs **
+---
+
+### 1️⃣ Number of Islands \[Must Do]
+
+**Pattern / Idea:** DFS/BFS flood fill – turn connected `1`s into water.
+**Steps:**
+
+1. Iterate grid cells
+2. If land → run DFS/BFS → sink island (mark visited or flip to `0`)
+3. Count +1 per DFS start
+
+**Python Code:**
+
+```python
+def numIslands(grid):
+    if not grid: return 0
+    rows, cols = len(grid), len(grid[0])
+    visited = set()
+    
+    def dfs(r, c):
+        if (r < 0 or c < 0 or r >= rows or c >= cols or
+            grid[r][c] == "0" or (r, c) in visited):
+            return
+        visited.add((r, c))
+        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1)
+    
+    islands = 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == "1" and (r, c) not in visited:
+                dfs(r, c)
+                islands += 1
+    return islands
+```
+
+**T.C.:** O(m·n)
+
+**S.C.:** O(m·n) recursion/visited
+
+**Quick Recall Hack:** “Each DFS = 1 island.”
+
+---
+
+### 2️⃣ Max Area of Island \[Must Do]
+
+**Pattern / Idea:** Same DFS flood fill, but count size.
+**Steps:**
+
+1. Traverse grid
+2. Run DFS when land found, return area size
+3. Track max size
+
+**Python Code:**
+
+```python
+def maxAreaOfIsland(grid):
+    rows, cols = len(grid), len(grid[0])
+    visited = set()
+    
+    def dfs(r, c):
+        if (r < 0 or c < 0 or r >= rows or c >= cols or
+            grid[r][c] == 0 or (r, c) in visited):
+            return 0
+        visited.add((r, c))
+        return (1 + dfs(r+1, c) + dfs(r-1, c) +
+                   dfs(r, c+1) + dfs(r, c-1))
+    
+    max_area = 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1 and (r, c) not in visited:
+                max_area = max(max_area, dfs(r, c))
+    return max_area
+```
+
+**T.C.:** O(m·n)
+
+**S.C.:** O(m·n)
+
+**Quick Recall Hack:** “DFS + count size.”
+
+---
+
+### 3️⃣ Clone Graph \[Must Do]
+
+**Pattern / Idea:** Graph traversal + hashmap to clone nodes.
+**Steps:**
+
+1. Use DFS/BFS
+2. Map original node → new node
+3. Traverse neighbors, build connections
+
+**Python Code:**
+
+```python
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors else []
+
+def cloneGraph(node):
+    oldToNew = {}
+    def dfs(n):
+        if n in oldToNew:
+            return oldToNew[n]
+        copy = Node(n.val)
+        oldToNew[n] = copy
+        for nei in n.neighbors:
+            copy.neighbors.append(dfs(nei))
+        return copy
+    return dfs(node) if node else None
+```
+
+**T.C.:** O(V+E)
+
+**S.C.:** O(V)
+
+**Quick Recall Hack:** “Map old→new, DFS clone neighbors.”
+
+---
+
+### 4️⃣ Walls and Gates \[Must Do]
+
+**Pattern / Idea:** Multi-source BFS from all gates (`0`).
+**Steps:**
+
+1. Add all gate positions to queue
+2. BFS, spreading distance outward
+3. Update rooms as min distance
+
+**Python Code:**
+
+```python
+from collections import deque
+
+def wallsAndGates(rooms):
+    rows, cols = len(rooms), len(rooms[0])
+    q = deque()
+    INF = 2147483647
+    
+    for r in range(rows):
+        for c in range(cols):
+            if rooms[r][c] == 0:
+                q.append((r, c))
+    
+    directions = [(1,0),(-1,0),(0,1),(0,-1)]
+    while q:
+        r, c = q.popleft()
+        for dr, dc in directions:
+            nr, nc = r+dr, c+dc
+            if 0 <= nr < rows and 0 <= nc < cols and rooms[nr][nc] == INF:
+                rooms[nr][nc] = rooms[r][c] + 1
+                q.append((nr, nc))
+```
+
+**T.C.:** O(m·n)
+
+**S.C.:** O(m·n)
+
+**Quick Recall Hack:** “Push all gates → BFS expand.”
+
+---
+
+### 5️⃣ Rotting Oranges \[Must Do]
+
+**Pattern / Idea:** BFS from all rotten oranges at once.
+**Steps:**
+
+1. Add all rotten (2) to queue with time=0
+2. BFS spread → infect fresh (1)
+3. Track max minutes, check if fresh left
+
+**Python Code:**
+
+```python
+from collections import deque
+
+def orangesRotting(grid):
+    rows, cols = len(grid), len(grid[0])
+    q = deque()
+    fresh = 0
+    
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 2:
+                q.append((r, c, 0))
+            elif grid[r][c] == 1:
+                fresh += 1
+    
+    directions = [(1,0),(-1,0),(0,1),(0,-1)]
+    minutes = 0
+    while q:
+        r, c, t = q.popleft()
+        for dr, dc in directions:
+            nr, nc = r+dr, c+dc
+            if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                grid[nr][nc] = 2
+                fresh -= 1
+                q.append((nr, nc, t+1))
+                minutes = t+1
+    return minutes if fresh == 0 else -1
+```
+
+**T.C.:** O(m·n)
+
+**S.C.:** O(m·n)
+
+**Quick Recall Hack:** “Multi-BFS from rotten → last minute.”
+
+---
+
+### 6️⃣ Pacific Atlantic Water Flow \[Must Do]
+
+**Pattern / Idea:** Reverse thinking – BFS/DFS from oceans, not from every cell.
+**Steps:**
+
+1. Run DFS from Pacific edge → mark reachable
+2. Run DFS from Atlantic edge → mark reachable
+3. Answer = intersection of both
+
+**Python Code:**
+
+```python
+def pacificAtlantic(heights):
+    rows, cols = len(heights), len(heights[0])
+    pac, atl = set(), set()
+    
+    def dfs(r, c, visited, prevHeight):
+        if (r < 0 or c < 0 or r >= rows or c >= cols or
+            (r, c) in visited or heights[r][c] < prevHeight):
+            return
+        visited.add((r, c))
+        dfs(r+1, c, visited, heights[r][c])
+        dfs(r-1, c, visited, heights[r][c])
+        dfs(r, c+1, visited, heights[r][c])
+        dfs(r, c-1, visited, heights[r][c])
+    
+    for c in range(cols):
+        dfs(0, c, pac, heights[0][c])
+        dfs(rows-1, c, atl, heights[rows-1][c])
+    for r in range(rows):
+        dfs(r, 0, pac, heights[r][0])
+        dfs(r, cols-1, atl, heights[r][cols-1])
+    
+    return list(pac & atl)
+```
+
+**T.C.:** O(m·n)
+
+**S.C.:** O(m·n)
+
+**Quick Recall Hack:** “Flow backwards → mark Pacific & Atlantic → intersect.”
+
+---
+
+
+---
+
+# 📌 Graphs (Part 2)
+
+---
+
+### 7️⃣ Surrounded Regions \[Must Do]
+
+**Pattern / Idea:** “Boundary DFS” — if an `O` is connected to boundary, it’s safe.
+**Steps:**
+
+1. Run DFS/BFS from boundary `O`s → mark as safe
+2. Traverse board → flip unmarked `O` → `X`
+3. Restore safe marks → `O`
+
+**Code:**
+
+```python
+def solve(board):
+    rows, cols = len(board), len(board[0])
+
+    def dfs(r, c):
+        if r < 0 or c < 0 or r >= rows or c >= cols or board[r][c] != "O":
+            return
+        board[r][c] = "S"
+        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1)
+
+    for r in range(rows):
+        dfs(r, 0); dfs(r, cols-1)
+    for c in range(cols):
+        dfs(0, c); dfs(rows-1, c)
+
+    for r in range(rows):
+        for c in range(cols):
+            if board[r][c] == "O": board[r][c] = "X"
+            elif board[r][c] == "S": board[r][c] = "O"
+```
+
+**T.C.:** O(m·n)
+
+**S.C.:** O(m·n) recursion
+
+**Hack:** “Flood from borders, rest flip.”
+
+---
+
+### 8️⃣ Course Schedule (Topological Sort) \[Must Do]
+
+**Pattern / Idea:** Directed graph cycle detection.
+**Steps:**
+
+1. Build adj list of prereqs
+2. DFS with 3 states: unvisited, visiting, visited
+3. If cycle → False else True
+
+**Code:**
+
+```python
+def canFinish(numCourses, prerequisites):
+    adj = {i: [] for i in range(numCourses)}
+    for a, b in prerequisites:
+        adj[a].append(b)
+
+    visited = [0]*numCourses  # 0=unvisited,1=visiting,2=done
+    
+    def dfs(course):
+        if visited[course] == 1: return False
+        if visited[course] == 2: return True
+        visited[course] = 1
+        for nei in adj[course]:
+            if not dfs(nei): return False
+        visited[course] = 2
+        return True
+    
+    for c in range(numCourses):
+        if not dfs(c): return False
+    return True
+```
+
+**T.C.:** O(V+E)
+
+**S.C.:** O(V+E)
+
+**Hack:** “DFS cycle check = can finish.”
+
+---
+
+### 9️⃣ Course Schedule II \[Must Do]
+
+**Pattern / Idea:** Topological ordering.
+**Steps:**
+
+1. Build adj + indegree
+2. BFS queue with indegree=0
+3. Pop → reduce indegree → push new zero indegree
+4. If all visited → return order
+
+**Code:**
+
+```python
+from collections import deque
+
+def findOrder(numCourses, prerequisites):
+    adj = {i: [] for i in range(numCourses)}
+    indeg = [0]*numCourses
+    for a,b in prerequisites:
+        adj[b].append(a)
+        indeg[a]+=1
+    
+    q = deque([i for i in range(numCourses) if indeg[i]==0])
+    res=[]
+    while q:
+        c=q.popleft()
+        res.append(c)
+        for nei in adj[c]:
+            indeg[nei]-=1
+            if indeg[nei]==0:
+                q.append(nei)
+    return res if len(res)==numCourses else []
+```
+
+**T.C.:** O(V+E)
+**S.C.:** O(V+E)
+**Hack:** “Indegree BFS = order.”
+
+---
+
+### 🔟 Graph Valid Tree \[Must Do]
+
+**Pattern / Idea:** Tree if (1) connected and (2) edges = nodes-1.
+**Steps:**
+
+1. Check edge count = n-1
+2. DFS/BFS check connectivity
+3. If connected → True
+
+**Code:**
+
+```python
+def validTree(n, edges):
+    if len(edges)!=n-1: return False
+    adj={i:[] for i in range(n)}
+    for a,b in edges:
+        adj[a].append(b)
+        adj[b].append(a)
+    visited=set()
+    
+    def dfs(node, prev):
+        if node in visited: return
+        visited.add(node)
+        for nei in adj[node]:
+            if nei!=prev: dfs(nei, node)
+    
+    dfs(0,-1)
+    return len(visited)==n
+```
+
+**T.C.:** O(V+E)
+
+**S.C.:** O(V)
+
+**Hack:** “Edges=n-1 + connected = tree.”
+
+---
+
+### 1️⃣1️⃣ Number of Connected Components \[Must Do]
+
+**Pattern / Idea:** Count DFS starts in undirected graph.
+**Steps:**
+
+1. Build adj
+2. DFS each unvisited node
+3. Count connected comps
+
+**Code:**
+
+```python
+def countComponents(n, edges):
+    adj={i:[] for i in range(n)}
+    for a,b in edges:
+        adj[a].append(b)
+        adj[b].append(a)
+    visited=set()
+    def dfs(node):
+        if node in visited: return
+        visited.add(node)
+        for nei in adj[node]: dfs(nei)
+    comps=0
+    for i in range(n):
+        if i not in visited:
+            dfs(i)
+            comps+=1
+    return comps
+```
+
+**T.C.:** O(V+E)
+**S.C.:** O(V+E)
+**Hack:** “DFS count starts = comps.”
+
+---
+
+### 1️⃣2️⃣ Redundant Connection \[Must Do]
+
+**Pattern / Idea:** Union-Find (detect first edge making cycle).
+**Steps:**
+
+1. DSU with find+union
+2. For each edge, if already connected → return edge
+
+**Code:**
+
+```python
+def findRedundantConnection(edges):
+    parent=[i for i in range(len(edges)+1)]
+    rank=[1]*(len(edges)+1)
+    
+    def find(x):
+        while x!=parent[x]:
+            parent[x]=parent[parent[x]]
+            x=parent[x]
+        return x
+    
+    def union(x,y):
+        p1,p2=find(x),find(y)
+        if p1==p2: return False
+        if rank[p1]>rank[p2]:
+            parent[p2]=p1
+            rank[p1]+=rank[p2]
+        else:
+            parent[p1]=p2
+            rank[p2]+=rank[p1]
+        return True
+    
+    for u,v in edges:
+        if not union(u,v): return [u,v]
+```
+
+**T.C.:** O(E·α(V))
+
+**S.C.:** O(V)
+
+**Hack:** “Union-Find, first cycle edge.”
+
+---
+
+### 1️⃣3️⃣ Word Ladder \[Must Do]
+
+**Pattern / Idea:** BFS shortest path in word graph.
+**Steps:**
+
+1. Preprocess words by wildcard patterns (`h*t`, `*it`)
+2. BFS from `beginWord`
+3. Stop when reaching `endWord`
+
+**Code:**
+
+```python
+from collections import deque, defaultdict
+
+def ladderLength(beginWord, endWord, wordList):
+    if endWord not in wordList: return 0
+    wordList=set(wordList)
+    adj=defaultdict(list)
+    for word in wordList:
+        for i in range(len(word)):
+            pattern=word[:i]+"*"+word[i+1:]
+            adj[pattern].append(word)
+    
+    q=deque([(beginWord,1)])
+    visited=set([beginWord])
+    while q:
+        word,level=q.popleft()
+        if word==endWord: return level
+        for i in range(len(word)):
+            pattern=word[:i]+"*"+word[i+1:]
+            for nei in adj.get(pattern,[]):
+                if nei not in visited:
+                    visited.add(nei)
+                    q.append((nei,level+1))
+    return 0
+```
+
+**T.C.:** O(N·L²) (N=words, L=word length)
+
+**S.C.:** O(N·L)
+
+**Hack:** “Wildcard dict + BFS shortest path.”
+
+---
+
+
+
+
+
+---
+
+# ** 📌Section 14 : 1-D Dynamic Programming  ** 
+
+---
+
+### 1️⃣ Climbing Stairs \[Must Do]
+
+**Pattern / Idea:** Classic Fibonacci-like DP. Number of ways to reach step `n` = ways to reach `n-1` + ways to reach `n-2`.
+
+**Steps:**
+
+1. Base: step 0 → 1 way, step 1 → 1 way
+2. DP\[i] = DP\[i-1] + DP\[i-2]
+3. Return DP\[n]
+
+**Python Code:**
+
+```python
+def climbStairs(n):
+    if n <= 2: return n
+    a, b = 1, 2
+    for _ in range(3, n+1):
+        a, b = b, a + b
+    return b
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Hack:** “Fib sequence → step counts.”
+
+---
+
+### 2️⃣ Min Cost Climbing Stairs \[Must Do]
+
+**Pattern / Idea:** DP min cost to reach top. Either take step from i-1 or i-2.
+
+**Steps:**
+
+1. DP\[i] = cost\[i] + min(DP\[i-1], DP\[i-2])
+2. Return min(DP\[n-1], DP\[n-2])
+
+**Code:**
+
+```python
+def minCostClimbingStairs(cost):
+    a, b = cost[0], cost[1]
+    for i in range(2, len(cost)):
+        a, b = b, cost[i] + min(a, b)
+    return min(a, b)
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Hack:** “Keep rolling min of last two steps.”
+
+---
+
+### 3️⃣ House Robber \[Must Do]
+
+**Pattern / Idea:** DP: max money at house i = max(rob i or skip i).
+
+**Steps:**
+
+1. DP\[i] = max(DP\[i-1], DP\[i-2]+nums\[i])
+2. Use rolling variables
+
+**Code:**
+
+```python
+def rob(nums):
+    prev, curr = 0, 0
+    for n in nums:
+        prev, curr = curr, max(curr, prev+n)
+    return curr
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Hack:** “Prev two max → rob or skip.”
+
+---
+
+### 4️⃣ House Robber II
+
+**Pattern / Idea:** Circular variant. Solve twice (exclude first or last).
+
+**Steps:**
+
+1. rob\_linear(nums\[:-1])
+2. rob\_linear(nums\[1:])
+3. Return max
+
+**Code:**
+
+```python
+def rob_linear(nums):
+    prev, curr = 0, 0
+    for n in nums:
+        prev, curr = curr, max(curr, prev+n)
+    return curr
+
+def rob2(nums):
+    if len(nums)==1: return nums[0]
+    return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Hack:** “Break circle → two runs.”
+
+---
+
+### 5️⃣ Longest Palindromic Substring \[Must Do]
+
+**Pattern / Idea:** Expand around center.
+
+**Steps:**
+
+1. Iterate each index as center
+2. Expand for odd/even palindromes
+3. Track max length
+
+**Code:**
+
+```python
+def longestPalindrome(s):
+    def expand(l,r):
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            l-=1; r+=1
+        return s[l+1:r]
+    
+    res=""
+    for i in range(len(s)):
+        res=max(res, expand(i,i), expand(i,i+1), key=len)
+    return res
+```
+
+**T.C.:** O(n²)
+
+**S.C.:** O(1)
+
+**Hack:** “Center expand → longest.”
+
+---
+
+### 6️⃣ Palindromic Substrings
+
+**Pattern / Idea:** Count all palindromes via center expand
+
+**Steps:**
+
+1. Each index: expand odd/even
+2. Count all valid expansions
+
+**Code:**
+
+```python
+def countSubstrings(s):
+    def expand(l,r):
+        count=0
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            count+=1
+            l-=1; r+=1
+        return count
+    
+    total=0
+    for i in range(len(s)):
+        total+=expand(i,i)
+        total+=expand(i,i+1)
+    return total
+```
+
+**T.C.:** O(n²)
+
+**S.C.:** O(1)
+
+**Hack:** “Expand from each center → count.”
+
+---
+
+### 7️⃣ Decode Ways \[Must Do]
+
+**Pattern / Idea:** DP: ways\[i] = ways\[i-1] (single) + ways\[i-2] (pair valid)
+
+**Steps:**
+
+1. DP\[0]=1 (empty string)
+2. For each i: add single + double if valid
+3. Return DP\[n]
+
+**Code:**
+
+```python
+def numDecodings(s):
+    if not s or s[0]=='0': return 0
+    n=len(s)
+    dp=[0]*(n+1)
+    dp[0]=1; dp[1]=1
+    for i in range(2,n+1):
+        if s[i-1]!='0': dp[i]+=dp[i-1]
+        if 10<=int(s[i-2:i])<=26: dp[i]+=dp[i-2]
+    return dp[n]
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(n)
+
+**Hack:** “Single + pair valid → sum ways.”
+
+---
+
+### 8️⃣ Coin Change \[Must Do]
+
+**Pattern / Idea:** DP min coins for amount.
+
+**Steps:**
+
+1. DP\[0]=0
+2. DP\[i]=min(DP\[i], DP\[i-coin]+1) for all coins
+3. Return DP\[amount] if reachable else -1
+
+**Code:**
+
+```python
+def coinChange(coins, amount):
+    dp=[float('inf')]*(amount+1)
+    dp[0]=0
+    for i in range(1, amount+1):
+        for c in coins:
+            if i>=c:
+                dp[i]=min(dp[i], dp[i-c]+1)
+    return dp[amount] if dp[amount]!=float('inf') else -1
+```
+
+
+**T.C.:** O(amount·coins)
+
+**S.C.:** O(amount)
+
+**Hack:** “Build min coins up → DP array.”
+
+---
+
+### 9️⃣ Maximum Product Subarray
+
+**Pattern / Idea:** Track max/min product due to negatives.
+
+**Steps:**
+
+1. Maintain `curr_max` & `curr_min`
+2. Swap if negative
+3. Update global max
+
+**Code:**
+
+```python
+def maxProduct(nums):
+    res = curr_max = curr_min = nums[0]
+    for n in nums[1:]:
+        if n<0: curr_max, curr_min = curr_min, curr_max
+        curr_max = max(n, curr_max*n)
+        curr_min = min(n, curr_min*n)
+        res = max(res, curr_max)
+    return res
+```
+
+**T.C.:** O(n)
+
+**S.C.:** O(1)
+
+**Hack:** “Negatives swap max/min → track global max.”
+
+---
+
+### 1️⃣0️⃣ Word Break \[Must Do]
+
+**Pattern / Idea:** DP: can s\[:i] be segmented?
+
+**Steps:**
+
+1. DP\[0]=True
+2. For i in 1..n, check j\<i: dp\[j] and s\[j\:i] in wordDict
+3. Return dp\[n]
+
+**Code:**
+
+```python
+def wordBreak(s, wordDict):
+    wordSet=set(wordDict)
+    dp=[False]*(len(s)+1)
+    dp[0]=True
+    for i in range(1,len(s)+1):
+        for j in range(i):
+            if dp[j] and s[j:i] in wordSet:
+                dp[i]=True
+                break
+    return dp[len(s)]
+```
+
+**T.C.:** O(n²·w) (w=max word length)
+**S.C.:** O(n)
+**Hack:** “DP prefix + word set lookup.”
+
+---
+
+### 1️⃣1️⃣ Longest Increasing Subsequence \[Must Do]
+
+**Pattern / Idea:** DP\[i]=max LIS ending at i.
+
+**Steps:**
+
+1. DP\[i]=max(1 + DP\[j] for j\<i if nums\[j]\<nums\[i])
+2. Return max(DP)
+
+**Code:**
+
+```python
+def lengthOfLIS(nums):
+    dp=[1]*len(nums)
+    for i in range(len(nums)):
+        for j in range(i):
+            if nums[j]<nums[i]:
+                dp[i]=max(dp[i], dp[j]+1)
+    return max(dp)
+```
+
+**T.C.:** O(n²)
+
+**S.C.:** O(n)
+
+**Hack:** “Track LIS ending at each index.”
+
+---
+
+### 1️⃣2️⃣ Partition Equal Subset Sum \[Must Do]
+
+**Pattern / Idea:** 0/1 Knapsack subset sum problem.
+
+**Steps:**
+
+1. Total sum must be even
+2. DP\[i]=True if sum i achievable
+3. Return DP\[total//2]
+
+**Code:**
+
+```python
+def canPartition(nums):
+    total=sum(nums)
+    if total%2!=0: return False
+    target=total//2
+    dp=[False]*(target+1)
+    dp[0]=True
+    for num in nums:
+        for i in range(target,num-1,-1):
+            dp[i]=dp[i] or dp[i-num]
+    return dp[target]
+```
+
+**T.C.:** O(n\*sum)
+
+**S.C.:** O(sum)
+
+**Hack:** “0/1 knapsack → target = sum/2.”
+
+---
+
+
+
+
+
+---
+
+# 📌**  Section 15: 2-D Dynamic Programming (Must Do) **
+
+---
+
+### 1️⃣ Unique Paths \[Must Do]
+
+**Pattern / Idea:** DP grid: ways to reach cell = from top + from left
+
+**Steps:**
+
+1. Initialize DP\[0]\[*] = 1, DP\[*]\[0] = 1
+2. For each cell: DP\[i]\[j] = DP\[i-1]\[j] + DP\[i]\[j-1]
+3. Return DP\[m-1]\[n-1]
+
+**Code:**
+
+```python
+def uniquePaths(m, n):
+    dp = [[1]*n for _ in range(m)]
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    return dp[m-1][n-1]
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “Ways = top + left.”
+
+---
+
+### 2️⃣ Longest Common Subsequence \[Must Do]
+
+**Pattern / Idea:** DP\[i]\[j] = LCS of s1\[:i], s2\[:j]
+
+**Steps:**
+
+1. If chars match → DP\[i]\[j] = 1 + DP\[i-1]\[j-1]
+2. Else → DP\[i]\[j] = max(DP\[i-1]\[j], DP\[i]\[j-1])
+3. Return DP\[m]\[n]
+
+**Code:**
+
+```python
+def longestCommonSubsequence(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [[0]*(n+1) for _ in range(m+1)]
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if text1[i-1]==text2[j-1]:
+                dp[i][j]=1+dp[i-1][j-1]
+            else:
+                dp[i][j]=max(dp[i-1][j], dp[i][j-1])
+    return dp[m][n]
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “Match → diagonal+1, else max(left, top).”
+
+---
+
+### 3️⃣ Best Time to Buy and Sell Stock with Cooldown \[Must Do]
+
+**Pattern / Idea:** Track DP: hold, sold, rest
+
+**Steps:**
+
+1. hold\[i] = max(hold\[i-1], rest\[i-1]-price)
+2. sold\[i] = hold\[i-1]+price
+3. rest\[i] = max(rest\[i-1], sold\[i-1])
+4. Return max(sold\[-1], rest\[-1])
+
+**Code:**
+
+```python
+def maxProfit(prices):
+    if not prices: return 0
+    n = len(prices)
+    hold, sold, rest = -prices[0], 0, 0
+    for i in range(1, n):
+        prev_hold, prev_sold, prev_rest = hold, sold, rest
+        hold = max(prev_hold, prev_rest-prices[i])
+        sold = prev_hold + prices[i]
+        rest = max(prev_rest, prev_sold)
+    return max(sold, rest)
+```
+
+**T.C.:** O(n)
+**S.C.:** O(1)
+**Hack:** “3 states → hold/sell/rest.”
+
+---
+
+### 4️⃣ Coin Change II \[Must Do]
+
+**Pattern / Idea:** DP ways to make each amount
+
+**Steps:**
+
+1. dp\[0]=1
+2. For each coin, update dp\[i] += dp\[i-coin]
+3. Return dp\[amount]
+
+**Code:**
+
+```python
+def change(amount, coins):
+    dp=[0]*(amount+1)
+    dp[0]=1
+    for c in coins:
+        for i in range(c, amount+1):
+            dp[i]+=dp[i-c]
+    return dp[amount]
+```
+
+**T.C.:** O(amount\*coins)
+**S.C.:** O(amount)
+**Hack:** “Build combinations per coin.”
+
+---
+
+### 5️⃣ Target Sum \[Must Do]
+
+**Pattern / Idea:** Convert to subset sum problem
+
+**Steps:**
+
+1. sum(P) - sum(N) = target → subset sum = (sum+target)/2
+2. Count subsets equal to (sum+target)/2
+3. DP\[i] = ways to get sum i
+
+**Code:**
+
+```python
+def findTargetSumWays(nums, target):
+    total=sum(nums)
+    if (total+target)%2!=0 or total<abs(target): return 0
+    s=(total+target)//2
+    dp=[0]*(s+1)
+    dp[0]=1
+    for num in nums:
+        for i in range(s, num-1, -1):
+            dp[i]+=dp[i-num]
+    return dp[s]
+```
+
+**T.C.:** O(n\*s)
+**S.C.:** O(s)
+**Hack:** “Target → subset sum → DP.”
+
+---
+
+### 6️⃣ Interleaving String \[Must Do]
+
+**Pattern / Idea:** 2-D DP: check if s3 formed by interleaving s1,s2
+
+**Steps:**
+
+1. DP\[i]\[j]=True if s3\[:i+j] formed by s1\[:i]+s2\[:j]
+2. Recurrence: DP\[i]\[j] = (DP\[i-1]\[j] and s1\[i-1]==s3\[i+j-1]) or (DP\[i]\[j-1] and s2\[j-1]==s3\[i+j-1])
+
+**Code:**
+
+```python
+def isInterleave(s1,s2,s3):
+    if len(s1)+len(s2)!=len(s3): return False
+    m,n=len(s1),len(s2)
+    dp=[[False]*(n+1) for _ in range(m+1)]
+    dp[0][0]=True
+    for i in range(m+1):
+        for j in range(n+1):
+            if i>0: dp[i][j]|=dp[i-1][j] and s1[i-1]==s3[i+j-1]
+            if j>0: dp[i][j]|=dp[i][j-1] and s2[j-1]==s3[i+j-1]
+    return dp[m][n]
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “Check prefixes → DP table.”
+
+---
+
+### 7️⃣ Longest Increasing Path in a Matrix \[Must Do]
+
+**Pattern / Idea:** DFS + memoization. Move 4 directions increasing.
+
+**Steps:**
+
+1. For each cell, DFS to neighbors with higher value
+2. Memoize max path length from each cell
+3. Return max of all
+
+**Code:**
+
+```python
+def longestIncreasingPath(matrix):
+    if not matrix: return 0
+    rows, cols = len(matrix), len(matrix[0])
+    memo=[[0]*cols for _ in range(rows)]
+    
+    def dfs(r,c):
+        if memo[r][c]: return memo[r][c]
+        val=matrix[r][c]
+        max_len=1
+        for dr, dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+            nr,nc=r+dr,c+dc
+            if 0<=nr<rows and 0<=nc<cols and matrix[nr][nc]>val:
+                max_len=max(max_len,1+dfs(nr,nc))
+        memo[r][c]=max_len
+        return max_len
+    
+    return max(dfs(r,c) for r in range(rows) for c in range(cols))
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “DFS + memo → max increasing path.”
+
+---
+
+### 8️⃣ Distinct Subsequences \[Must Do]
+
+**Pattern / Idea:** 2-D DP: count ways s1→s2
+
+**Steps:**
+
+1. DP\[i]\[j] = number of ways s1\[:i] forms s2\[:j]
+2. If chars match → DP\[i]\[j] = DP\[i-1]\[j-1] + DP\[i-1]\[j]
+3. Else → DP\[i]\[j] = DP\[i-1]\[j]
+
+**Code:**
+
+```python
+def numDistinct(s,t):
+    m,n=len(s),len(t)
+    dp=[[0]*(n+1) for _ in range(m+1)]
+    for i in range(m+1): dp[i][0]=1
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if s[i-1]==t[j-1]:
+                dp[i][j]=dp[i-1][j-1]+dp[i-1][j]
+            else:
+                dp[i][j]=dp[i-1][j]
+    return dp[m][n]
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “Char match → take+skip, else skip.”
+
+---
+
+### 9️⃣ Edit Distance \[Must Do]
+
+**Pattern / Idea:** 2-D DP: min edits (insert, delete, replace)
+
+**Steps:**
+
+1. DP\[i]\[j]=min edits to convert word1\[:i]→word2\[:j]
+2. Recurrence:
+
+   * if same → DP\[i]\[j]=DP\[i-1]\[j-1]
+   * else → 1+min(insert, delete, replace)
+
+**Code:**
+
+```python
+def minDistance(word1, word2):
+    m,n=len(word1),len(word2)
+    dp=[[0]*(n+1) for _ in range(m+1)]
+    for i in range(m+1): dp[i][0]=i
+    for j in range(n+1): dp[0][j]=j
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if word1[i-1]==word2[j-1]:
+                dp[i][j]=dp[i-1][j-1]
+            else:
+                dp[i][j]=1+min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+    return dp[m][n]
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “DP matrix → min insert/delete/replace.”
+
+---
+
+### 🔟 Burst Balloons \[Must Do]
+
+**Pattern / Idea:** DP on subarrays, solve inside-out
+
+**Steps:**
+
+1. Extend array with 1 at both ends
+2. DP\[i]\[j] = max coins bursting between i & j (exclusive)
+3. Try every k in (i,j) as last burst → DP\[i]\[k]+DP\[k]\[j]+nums\[i]\*nums\[k]\*nums\[j]
+
+**Code:**
+
+```python
+def maxCoins(nums):
+    nums = [1]+nums+[1]
+    n=len(nums)
+    dp=[[0]*n for _ in range(n)]
+    for length in range(2,n):
+        for left in range(0,n-length):
+            right=left+length
+            for i in range(left+1,right):
+                dp[left][right]=max(dp[left][right],
+                                     dp[left][i]+dp[i][right]+nums[left]*nums[i]*nums[right])
+    return dp[0][n-1]
+```
+
+**T.C.:** O(n³)
+**S.C.:** O(n²)
+**Hack:** “Burst last in subarray → max coins.”
+
+---
+
+### 1️⃣1️⃣ Regular Expression Matching \[Must Do]
+
+**Pattern / Idea:** DP\[i]\[j]=s\[:i] matches p\[:j]
+
+**Steps:**
+
+1. DP\[0]\[0]=True
+2. Handle `*` carefully: zero or multiple occurrence
+3. Fill DP\[i]\[j] based on char match or `*`
+
+**Code:**
+
+```python
+def isMatch(s,p):
+    m,n=len(s),len(p)
+    dp=[[False]*(n+1) for _ in range(m+1)]
+    dp[0][0]=True
+    for j in range(2,n+1):
+        if p[j-1]=='*': dp[0][j]=dp[0][j-2]
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if p[j-1]==s[i-1] or p[j-1]=='.':
+                dp[i][j]=dp[i-1][j-1]
+            elif p[j-1]=='*':
+                dp[i][j]=dp[i][j-2] or (dp[i-1][j] and (s[i-1]==p[j-2] or p[j-2]=='.'))
+    return dp[m][n]
+```
+
+**T.C.:** O(m·n)
+**S.C.:** O(m·n)
+**Hack:** “\* → zero or many of prev char; . → match any.”
+
+---
 
 
