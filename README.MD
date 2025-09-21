@@ -502,7 +502,7 @@ def longestConsecutive(nums):
 **Quick Recall Hack:** "Sequence start → expand."
 
 
-Perfect. Let’s tackle the **Two Pointers** section in your requested **Problem Format**, marking **must-do non-FAANG problems in brackets**.
+
 
 ---
 
@@ -5245,4 +5245,5 @@ def isMatch(s,p):
 
 
 https://chatgpt.com/share/68cee332-85c0-8010-b144-7018d0a91a45
+
 https://chatgpt.com/share/68cee355-c284-8010-9f4d-75b285d8c12c
