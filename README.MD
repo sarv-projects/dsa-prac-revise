@@ -5597,7 +5597,7 @@ Difference between **Switch vs Hub vs Router**:
 
 ---
 
-### 🔑 Interview Probing Angles (IBM-style)
+### 🔑 Interview Probing Angles ( -style)
 
 * Why CRC is more powerful than checksum?
 * What happens if ARP table is poisoned? (→ ARP spoofing attack).
@@ -5778,7 +5778,7 @@ Why fragmentation avoided in IPv6?
 
 
 
-Perfect. Transport Layer is **heavily asked** in IBM/other SWE interviews, especially concepts like TCP reliability, congestion control, handshakes, and UDP differences. Let’s go **full deep dive**.
+Perfect. Transport Layer is **heavily asked** in  /other SWE interviews, especially concepts like TCP reliability, congestion control, handshakes, and UDP differences. Let’s go **full deep dive**.
 
 ---
 
@@ -5852,7 +5852,7 @@ Perfect. Transport Layer is **heavily asked** in IBM/other SWE interviews, espec
 * 4-way handshake: FIN/ACK from both sides
 * States: FIN\_WAIT, TIME\_WAIT, CLOSE\_WAIT
 
-📌 **IBM Trap**: Why TIME\_WAIT?
+📌 ** _ Trap**: Why TIME\_WAIT?
 
 * Ensures all delayed segments are discarded before new connections reuse same ports.
 
@@ -6039,7 +6039,7 @@ Perfect. Transport Layer is **heavily asked** in IBM/other SWE interviews, espec
   3. **Proxy Firewall** → acts as intermediary, inspects content
   4. **Next-Gen Firewall (NGFW)** → deep packet inspection, intrusion prevention, application awareness
 
-**IBM Trap Qs:**
+** _ Trap Qs:**
 
 * Difference between packet filtering vs stateful?
 * Why use NGFW over traditional firewall?
@@ -6095,7 +6095,7 @@ Perfect. Transport Layer is **heavily asked** in IBM/other SWE interviews, espec
 
 ---
 
-### 7.6 **Practical IBM Q Examples**
+### 7.6 **Practical  _ Q Examples**
 
 1. Difference HTTP vs HTTPS
 2. Explain SSL/TLS handshake
@@ -6146,7 +6146,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 * **Cons:** Cannot inspect packet payload (content), no session tracking
 * **Use:** Basic access control
 
-**IBM Trap Qs:** Difference between stateful and packet-filtering?
+** _ Trap Qs:** Difference between stateful and packet-filtering?
 
 ---
 
@@ -6207,7 +6207,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 
 ---
 
-## 5. **Common IBM Interview Questions on Firewalls**
+## 5. **Common  _ Interview Questions on Firewalls**
 
 * Types of firewalls and differences
 * Which firewall inspects **packet payload**? (Answer: Proxy / NGFW)
@@ -6266,7 +6266,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
    * Pros: Can detect new attacks
    * Cons: False positives are common
 
-**IBM Trap Qs:** Difference between IDS and IPS?
+** _ Trap Qs:** Difference between IDS and IPS?
 
 ---
 
@@ -6312,7 +6312,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 | SSL/TLS VPN | 4/7   | Strong     | Browser-based, secure web apps |
 | OpenVPN     | 3/4   | Strong     | Open-source, flexible          |
 
-**IBM Trap Qs:**
+** _ Trap Qs:**
 
 * Difference SSL VPN vs IPSec VPN
 * Why VPN encrypts traffic but firewall filters?
@@ -6340,7 +6340,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 4. **Session Key Established** → symmetric encryption for data
 5. **Secure communication begins**
 
-**IBM Trap Qs:**
+** _ Trap Qs:**
 
 * Why use asymmetric encryption only in handshake? → Slow, only for key exchange
 * Symmetric encryption for bulk data → fast, secure
@@ -6360,7 +6360,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 
 ---
 
-## 6. **Security Scenarios / IBM-Style Questions**
+## 6. **Security Scenarios /  _-Style Questions**
 
 1. You see a packet with SYN flood → which system blocks it? → IPS
 2. Employee wants to connect from home → which protocol to use? → SSL VPN or L2TP/IPSec
@@ -6372,7 +6372,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 
 ## ✅ Summary Table
 
-| Concept           | Key Points                            | IBM Interview Traps                              |
+| Concept           | Key Points                            |  _ Interview Traps                              |
 | ----------------- | ------------------------------------- | ------------------------------------------------ |
 | IDS               | Detects & alerts, signature/anomaly   | Passive, doesn’t block                           |
 | IPS               | Detects & blocks                      | Inline, can disrupt traffic                      |
@@ -6443,7 +6443,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 * VPNs (encrypt traffic end-to-end)
 * HSTS (HTTP Strict Transport Security)
 
-**IBM Trap Q:** Explain how MITM can be prevented with TLS + certificates.
+** _ Trap Q:** Explain how MITM can be prevented with TLS + certificates.
 
 ---
 
@@ -6452,7 +6452,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 * **Phishing:** Fake emails/websites trick users into revealing credentials.
 * **Social Engineering:** Manipulating humans to bypass security (phone calls, emails, in-person).
 
-**Real-world IBM relevance:**
+**Real-world  relevance:**
 
 * Can be asked as “How would you prevent phishing in a corporate network?”
 * Mitigation:
@@ -6489,13 +6489,13 @@ A **firewall** is a **network security device** (hardware or software) that **mo
   * Real-time alerts
   * Compliance reporting
 
-**Popular Tools:** Splunk, IBM QRadar, ArcSight
+**Popular Tools:** Splunk,  _ QRadar, ArcSight
 
-**IBM Trap Q:** Explain how SIEM integrates firewall, IDS/IPS logs for threat detection.
+**Trap Q:** Explain how SIEM integrates firewall, IDS/IPS logs for threat detection.
 
 ---
 
-## ✅ Key Takeaways for IBM Interviews:
+## ✅ Key Takeaways for  Interviews:
 
 | Threat/Tool                 | Purpose                      | Mitigation / Tool Example                 |
 | --------------------------- | ---------------------------- | ----------------------------------------- |
@@ -6504,7 +6504,7 @@ A **firewall** is a **network security device** (hardware or software) that **mo
 | MITM                        | Intercept communication      | TLS/HTTPS, VPNs, certificate validation   |
 | Phishing/Social Engineering | Steal credentials            | MFA, training, filters                    |
 | Honeypot                    | Detect & study attackers     | Decoy systems, low/high interaction       |
-| SIEM                        | Centralized threat detection | Splunk, IBM QRadar, log analysis          |
+| SIEM                        | Centralized threat detection | Splunk,   QRadar, log analysis          |
 
 ---
 
