@@ -1,4 +1,4 @@
-yes,rewrite,# Table of Contents
+# Table of Contents
 
 ## Section 1: Arrays & Hashing
 - [Contains Duplicate [Must Do]](#1️⃣-contains-duplicate-must-do)
