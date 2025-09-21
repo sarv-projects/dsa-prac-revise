@@ -1925,14 +1925,39 @@ def insert(intervals, newInterval):
 
 **Problem:** Merge all overlapping intervals.
 
-**Pattern / Idea:**
 
-1. Sort intervals by start time.
-2. Keep a `merged` list.
-3. For each interval:
 
-   * If it **overlaps** with last merged → merge
-   * Else → append
+---
+
+### **Memory Hook for “Merge Intervals”**
+
+1. **Sort by start** → always.
+
+   * Think: “Leftmost interval first.”
+
+2. **Keep a `merged` list** → start with first interval.
+
+3. **Iterate over remaining intervals**:
+
+   * Compare **start of current** with **end of last merged**:
+
+     * **If overlap (start ≤ last end)** → merge: new end = max(current end, last end)
+     * **Else** → append current to merged
+
+4. **Done** → merged intervals contain no overlaps.
+
+---
+
+### **Visual Pattern (Mental Image)**
+
+```
+1---3
+  2-----6
+       8---10
+               15---18
+```
+
+
 
 **Python Code (Simple, No Lambda Confusion):**
 
@@ -1940,16 +1965,16 @@ def insert(intervals, newInterval):
 def merge(intervals):
     if not intervals:
         return []
-    
-    intervals.sort(key=lambda x: x[0])  # Sort by start
-    merged = [intervals[0]]
-    
+    # Step 1: Sort intervals by start
+    intervals.sort(key=lambda x: x[0]) 
+    merged = [intervals[0]]# Step 2: Start merged list with first interval
+     # Step 3: Iterate through remaining intervals
     for curr in intervals[1:]:
-        last = merged[-1]
+        last = merged[-1]# last interval in merged
         if curr[0] <= last[1]:  # Overlap
-            last[1] = max(last[1], curr[1])
+            last[1] = max(last[1], curr[1]) # merge
         else:
-            merged.append(curr)
+            merged.append(curr)# no overlap, just add
     
     return merged
 ```
